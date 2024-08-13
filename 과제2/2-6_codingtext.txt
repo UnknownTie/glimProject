@@ -1,0 +1,27 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> arr, vector<int> query) {
+    vector<int> vecNULL;
+    int arrSize = arr.size();
+    int querySize = query.size();
+    int nquerySizeCK = (50 > arrSize/2)? 50 : arrSize/2;
+       //예외 처리 
+    if(arrSize < 5 || arrSize > 100000 || querySize < 1 || querySize >= nquerySizeCK)
+        return vecNULL;
+
+    int ckPos[2] = {0, arrSize} ;
+    for(int i =0; i < querySize; i++ ){
+        if((i%2)!=0)//홀수
+            ckPos[0] +=  query[i]; 
+        else //짝수
+            ckPos[1] =  ckPos[0] + query[i] + 1;  
+    }
+
+    std::vector<int> vecRtn;
+    vecRtn.insert(vecRtn.begin(), arr.begin() +  ckPos[0], arr.begin() +  ckPos[1]);
+    
+    return vecRtn;
+}

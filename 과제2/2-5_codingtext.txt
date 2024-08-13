@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<vector<int>> board, int k) {
+    int sum = 0;
+    int listSize = board.size();
+    int listSizeI = board[0].size();
+    //예외 처리 
+    if(listSize < 1 || listSize > 100 || listSizeI < 1 || listSizeI > 100)
+        return 99;
+    
+    if( k < 0 || k >=  (listSize+listSizeI))
+        return 999;
+    
+    for(int i=0; i< listSize ; i++){
+        //예외 처리 
+        if(listSizeI != board[i].size())
+            return 9999;
+        
+        for(int j=0; j< listSizeI; j++){
+            if( i + j <= k)
+                sum += board[i][j];
+        }    
+    }
+    
+    return sum;
+}

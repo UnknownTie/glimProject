@@ -1,0 +1,27 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> num_list, int n) {
+    vector<int> vecNULL;
+    vector<int> veclist(num_list);
+    int listSize = veclist.size();
+    
+    //1.예외 처리 
+    if (2 > listSize || listSize  > 30 || 1 > n || listSize < n)
+        return vecNULL;    
+    
+    for(int i =0; i< listSize; i++){
+        //2.예외 처리 원소 크기 
+        if(1 > num_list[i] || 9 < num_list[i])
+            return vecNULL; 
+    }
+    
+    //swap 
+    vector<int> vecSwap(veclist.begin() + n, veclist.end()); 
+    veclist.erase(veclist.begin() + n, veclist.end()); 
+    veclist.insert(veclist.begin(), vecSwap.begin(), vecSwap.end());
+
+    return veclist;
+}

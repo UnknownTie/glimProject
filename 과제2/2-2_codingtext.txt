@@ -1,0 +1,36 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(string my_string, string is_prefix) {
+    int my_length = my_string.length();
+    int is_length = is_prefix.length();
+
+    //1.예외 처리 
+    if (1 > my_length || my_length > 100 || 1 > is_length || is_length > 100)
+        return 0;    
+    
+    //2.문자열보다 접두사가 크면 제외 
+    if(my_length < is_length)
+         return 0;  
+    
+    int i =0;
+    for(i = 0; i <is_length; i++ ){
+        //3.글자 하나만 달라도 제외 
+        if(my_string[i] != is_prefix[i])
+            return 0;
+        
+        //4.영문 소문자 확인 
+        if (my_string[i] < 'a' || 'z' < my_string[i]) 
+             return 0;
+    }
+    //남은 문자열 중에 소문자가 아닌게 있는지 확인 
+    for(i; i <my_length; i++ ){
+        //5.영문 소문자 확인 
+        if (my_string[i] < 'a' || 'z' < my_string[i]) 
+             return 0;
+    }
+    //모두 통과했으면, 접두사
+    return 1;
+}

@@ -1,0 +1,89 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int a, int b) {
+    //예외처리 
+    if (1 > a || b  > 10000 )
+        return 2;   
+    
+    //설명 
+    //1. 2개 변수의 자릿수가 같은 경우, 큰 수가 앞으로 가야된다.
+    //2. 2개의 변수 자릿수가 다르면, 큰 자릿수(X)를 작은 자릿수(Y)의 크기를 기준으로 앞(A)뒤(B)로 분리한다.
+    //2-1) Y != A : 큰 수가 앞에 둘때, 숫자가 더 커진다.
+    //2-2) Y == A : Y의 앞에서부터 B의 자릿수만큼 분리해서 B와 비교
+    //-> 만약 모두 같다면, 어떤 순으로 합치든 상관 X (123123 ,123인 경우, 합치면 123123123 )
+    
+    int rtn = 0;
+    //비교 변수 
+    int org_A = a ,org_B = b; 
+    //자릿수 확인 변수 
+    int ck_A = org_A ,ck_B = org_B; 
+    //자릿수 저장
+    int digitA = 1 ,digitB = 1;
+
+    //자릿수 확인  : 제곱이 안되서 자릿수 확인하면서 10를 곱함 
+    while (ck_A != 0) { ck_A /= 10; digitA *=10; }
+    while (ck_B != 0) { ck_B /= 10; digitB *=10; }
+  
+    //자리수 비교 
+    int frontNum = org_A , backNum =org_B;
+    
+    //자리수가 같으면 큰 값이 앞으로 
+    if(digitA == digitB){
+         //큰 수 찾기 
+        if(org_A >= org_B){
+            frontNum = org_A * digitB;
+            backNum = org_B;
+        }
+        else{
+            frontNum = org_B * digitA;
+            backNum = org_A;
+        } 
+    }else { 
+        //자릿수가 다른 경우,
+        int maxNum =org_A , minNum =org_B;
+        int digitMaxCount =digitA, digitMinCount =digitB;
+        //B의 자리수가 크다면, 스왑
+        if(digitA < digitB){
+            maxNum = org_B;
+            minNum = org_A;
+            digitMaxCount = digitB;
+            digitMinCount = digitA;
+        }
+        
+        //자릿수 차이 확인 
+        int digitCount = digitMaxCount / digitMinCount;
+        
+        //자릿수가 더 큰 수를 앞뒤로 분리
+        int maxNum_1 = maxNum / digitCount;
+        int maxNum_2 = maxNum % digitCount;
+        
+        //앞에 수 비교 
+        if(maxNum_1 != minNum){ 
+            //앞의 수와 작은 수가 다르면, 큰 수 찾기
+            if(maxNum_1 > minNum){
+                frontNum = maxNum * digitMinCount;
+                backNum = minNum;
+            }else if(maxNum_1 < minNum){
+                frontNum = minNum * digitMaxCount;
+                backNum = maxNum;
+            }
+        }else{
+            //같다면, 뒤에 수 비교 
+            //작은 자릿수가 10보다 작으면 이미 가장 앞에 자리라서 그대로 사용 
+            int minNum_1 = (minNum <= 10 ) ? minNum : minNum / digitCount;
+            
+            if(maxNum_2 >= minNum_1){
+                frontNum = maxNum * digitMinCount;
+                backNum = minNum;
+            }else if(maxNum_2 < minNum_1){
+                frontNum = minNum * digitMaxCount;
+                backNum = maxNum;
+            }
+        } 
+    }
+    rtn = frontNum + backNum;
+    return  rtn;
+}
